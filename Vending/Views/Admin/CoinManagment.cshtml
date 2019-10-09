@@ -1,0 +1,35 @@
+﻿@model Vending.Models.Admin.CoinViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Изменение данных по монете</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-lg-4"><img src="~/Content/images/@{@Model.price}rub.jpg" title="@Model.price.ToString() руб." /></div>
+        <div class="col-lg-8">
+            <dl class="dl-horizontal">
+                <input type="hidden" id="model_id" value="@Model.id" />
+                <dt>@Html.DisplayNameFor(model => model.price)</dt>
+                <dd>@Html.DisplayFor(model => model.price)</dd>
+                <dt>@Html.DisplayNameFor(model => model.qty)</dt>
+                <dd id="coin_count">@Html.DisplayFor(model => model.qty)</dd>
+                <dt>@Html.DisplayNameFor(model => model.blocked)</dt>
+                <dd>@Html.CheckBoxFor(model => model.blocked, new { htmlAttributes = new { @class = "form-control" } })</dd>
+            </dl>
+            <div>Изменение количества монет</div>
+            <form class="form-inline" style="margin-bottom: 20px;">
+                <a href="#" id="coin_add" class="btn btn-primary">Добавить</a>
+                <input type="number" class="form-control" id="size" value="0" style="width: 70px;">
+                <a href="#" id="coin_del" class="btn btn-primary">Вынуть</a>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    @Html.ActionLink("Закрыть", "Index", null, new { @class="btn btn-default" })
+    @*<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>*@
+</div>
+
+@Scripts.Render("~/bundles/coin_edit")
+

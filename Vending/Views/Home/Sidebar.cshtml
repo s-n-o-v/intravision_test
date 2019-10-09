@@ -1,0 +1,20 @@
+﻿@model Vending.Models.ViewModel
+
+<h3>Баланс <span style="border: 1px solid #00ffdd; background-color: #aaffff;float:right;width: 100px;text-align:right">₽ <span id="cash">@Model.Cash</span></h3>
+<hr />
+<h4>Пополнить</h4>
+
+<div id="side">
+    @foreach (Vending.Models.Coin c in Model.Coins)
+    {
+        <a href="#" class="coin"><img src="@c.image_url" data="@c.coin.price" title="@c.coin.price.ToString() руб." /></a>
+    }
+</div>
+
+<div id="cashout_btn" style="display: @if (Model.Cash == 0) { @Html.Raw("none") }">
+    <hr />
+
+    <button id="cashout" class="btn btn-default">Сдача</button>
+</div>
+
+@Scripts.Render("~/bundles/cash")

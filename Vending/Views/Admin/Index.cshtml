@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Vending.Models.Admin.DrinkViewModel>
+
+@{
+    ViewBag.Title = "Напитки";
+}
+
+<div class="row bg-info">
+    <div class="col-lg-10"><h2>@ViewBag.Title</h2></div>
+    <div class="col-lg-2 text-right" style="margin-top: 20px;">[ @Html.ActionLink("Выход", "Logout") ]</div>
+</div>
+<style>
+    .blocked {
+        color: #808080;
+    }
+</style>
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.name)</th>
+        <th width="75px" style="text-align: center">@Html.DisplayNameFor(model => model.qty)</th>
+        <th width="75px" style="text-align:center">@Html.DisplayNameFor(model => model.price)</th>
+        <th width="150px" style="text-align: right">@Html.ActionLink("Добавить", "DrinkCreate", null, new { @class = "modal-link" })</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.name)</td>
+            <td align="center">@Html.DisplayFor(modelItem => item.qty)</td>
+            <td align="center">@Html.DisplayFor(modelItem => item.price)</td>
+            <td align="right">
+                @Html.ActionLink("Изменить", "DrinkEdit", new { id = item.id }, new { @class = "modal-link" }) |
+                @Html.ActionLink("Удалить", "DrinkDelete", new { id = item.id }, new { @class = "modal-link" })
+            </td>
+        </tr>
+    }
+</table>
+<hr />
+<div class="row">
+    <div class="col-lg-10 bg-info"><h2>Монеты</h2></div>
+    <div class="col-lg-2 text-right bg-success"><h2>₽ @ViewBag.Cash</h2></div>
+</div>
+<table class="table">
+    <tr>
+        <th>Номинал, руб.</th>
+        <th>Количество, шт</th>
+        <th width="150px"></th>
+    </tr>
+
+    @foreach (Vending.Models.Admin.CoinViewModel item in ViewBag.Coins)
+    {
+        <tr>
+            <td>
+                ₽ @Html.DisplayFor(modelItem => item.price)
+                @if (item.blocked)
+                {
+                    @Html.Raw("&nbsp;&nbsp;<span class='blocked'>[Прием блокирован]</span>");
+                }
+            </td>
+            <td>@Html.DisplayFor(modelItem => item.qty)</td>
+            <td align="right">
+                @Html.ActionLink("Изменить", "CoinManagment", new { id = item.id }, new { @class = "modal-link" })
+            </td>
+        </tr>
+    }
+</table>
+
+<!-- Modal -->
+<div id="modal-container" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-content" style="width:60%! important; margin: 10px auto !important;">
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/modals")

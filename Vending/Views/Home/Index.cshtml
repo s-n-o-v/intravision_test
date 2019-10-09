@@ -1,0 +1,20 @@
+﻿@model Vending.Models.ViewModel
+
+@{
+    ViewBag.Title = "Список напитков";
+}
+
+@Scripts.Render("~/bundles/drinks")
+@Styles.Render("~/bundles/mainstyle")
+
+<div class="row" style="flex-wrap: wrap;">
+    <div class="col-md-3">
+        @Html.Partial("Sidebar", Model)
+    </div>
+    <div class="col-md-9">
+        <h2>@ViewBag.Title</h2>
+
+        <div id="main">
+        </div>
+    </div>
+</div>
