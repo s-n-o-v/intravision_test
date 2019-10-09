@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище VendingModel" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="bank">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="coin_id" Type="int" Nullable="false" />
+          <Property Name="qty" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="coin">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="price" Type="int" Nullable="false" />
+          <Property Name="blocked" Type="bit" />
+        </EntityType>
+        <EntityType Name="drink">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="200" />
+          <Property Name="price" Type="int" Nullable="false" />
+          <Property Name="picture" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="sold">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="drink_id" Type="int" Nullable="false" />
+          <Property Name="dt" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="store">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="drink_id" Type="int" Nullable="false" />
+          <Property Name="qty" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_bank_coin">
+          <End Role="coin" Type="Self.coin" Multiplicity="1" />
+          <End Role="bank" Type="Self.bank" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="coin">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bank">
+              <PropertyRef Name="coin_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sold_drink">
+          <End Role="drink" Type="Self.drink" Multiplicity="1" />
+          <End Role="sold" Type="Self.sold" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="drink">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sold">
+              <PropertyRef Name="drink_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_store_drink">
+          <End Role="drink" Type="Self.drink" Multiplicity="1" />
+          <End Role="store" Type="Self.store" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="drink">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="store">
+              <PropertyRef Name="drink_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище VendingModelContainer">
+          <EntitySet Name="bank" EntityType="Self.bank" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="coin" EntityType="Self.coin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="drink" EntityType="Self.drink" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sold" EntityType="Self.sold" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="store" EntityType="Self.store" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_bank_coin" Association="Self.FK_bank_coin">
+            <End Role="coin" EntitySet="coin" />
+            <End Role="bank" EntitySet="bank" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sold_drink" Association="Self.FK_sold_drink">
+            <End Role="drink" EntitySet="drink" />
+            <End Role="sold" EntitySet="sold" />
+          </AssociationSet>
+          <AssociationSet Name="FK_store_drink" Association="Self.FK_store_drink">
+            <End Role="drink" EntitySet="drink" />
+            <End Role="store" EntitySet="store" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VendingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="banks">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="coin_id" Type="Int32" Nullable="false" />
+          <Property Name="qty" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="coin" Relationship="Self.FK_bank_coin" FromRole="bank" ToRole="coin" />
+        </EntityType>
+        <EntityType Name="coins">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="price" Type="Int32" Nullable="false" />
+          <Property Name="blocked" Type="Boolean" />
+          <NavigationProperty Name="bank" Relationship="Self.FK_bank_coin" FromRole="coin" ToRole="bank" />
+        </EntityType>
+        <EntityType Name="drinks">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="price" Type="Int32" Nullable="false" />
+          <Property Name="picture" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="sold" Relationship="Self.FK_sold_drink" FromRole="drink" ToRole="sold" />
+          <NavigationProperty Name="store" Relationship="Self.FK_store_drink" FromRole="drink" ToRole="store" />
+        </EntityType>
+        <EntityType Name="solds">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="drink_id" Type="Int32" Nullable="false" />
+          <Property Name="dt" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="drink" Relationship="Self.FK_sold_drink" FromRole="sold" ToRole="drink" />
+        </EntityType>
+        <EntityType Name="stores">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="drink_id" Type="Int32" Nullable="false" />
+          <Property Name="qty" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="drink" Relationship="Self.FK_store_drink" FromRole="store" ToRole="drink" />
+        </EntityType>
+        <Association Name="FK_bank_coin">
+          <End Role="coin" Type="VendingModel.coins" Multiplicity="1" />
+          <End Role="bank" Type="VendingModel.banks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="coin">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bank">
+              <PropertyRef Name="coin_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sold_drink">
+          <End Role="drink" Type="VendingModel.drinks" Multiplicity="1" />
+          <End Role="sold" Type="VendingModel.solds" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="drink">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sold">
+              <PropertyRef Name="drink_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_store_drink">
+          <End Role="drink" Type="VendingModel.drinks" Multiplicity="1" />
+          <End Role="store" Type="VendingModel.stores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="drink">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="store">
+              <PropertyRef Name="drink_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="bank" EntityType="VendingModel.banks" />
+          <EntitySet Name="coin" EntityType="VendingModel.coins" />
+          <EntitySet Name="drink" EntityType="VendingModel.drinks" />
+          <EntitySet Name="sold" EntityType="VendingModel.solds" />
+          <EntitySet Name="store" EntityType="VendingModel.stores" />
+          <AssociationSet Name="FK_bank_coin" Association="Self.FK_bank_coin">
+            <End Role="coin" EntitySet="coin" />
+            <End Role="bank" EntitySet="bank" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sold_drink" Association="Self.FK_sold_drink">
+            <End Role="drink" EntitySet="drink" />
+            <End Role="sold" EntitySet="sold" />
+          </AssociationSet>
+          <AssociationSet Name="FK_store_drink" Association="Self.FK_store_drink">
+            <End Role="drink" EntitySet="drink" />
+            <End Role="store" EntitySet="store" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище VendingModelContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="bank">
+            <EntityTypeMapping TypeName="VendingModel.banks">
+              <MappingFragment StoreEntitySet="bank">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="coin_id" ColumnName="coin_id" />
+                <ScalarProperty Name="qty" ColumnName="qty" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="coin">
+            <EntityTypeMapping TypeName="VendingModel.coins">
+              <MappingFragment StoreEntitySet="coin">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="blocked" ColumnName="blocked" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="drink">
+            <EntityTypeMapping TypeName="VendingModel.drinks">
+              <MappingFragment StoreEntitySet="drink">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="picture" ColumnName="picture" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sold">
+            <EntityTypeMapping TypeName="VendingModel.solds">
+              <MappingFragment StoreEntitySet="sold">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="drink_id" ColumnName="drink_id" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="store">
+            <EntityTypeMapping TypeName="VendingModel.stores">
+              <MappingFragment StoreEntitySet="store">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="drink_id" ColumnName="drink_id" />
+                <ScalarProperty Name="qty" ColumnName="qty" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

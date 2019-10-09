@@ -1,0 +1,46 @@
+﻿.col-md-3 img {
+    margin: 5px;
+}
+
+#main, #side {
+    display: -webkit-flex; /* Safari */
+    -webkit-flex-wrap: wrap; /* Safari 6.1+ */
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.drinks_pic {
+    width: 80%;
+    height: 80%;
+}
+
+.drinks_pic_offline {
+    opacity: .3;
+}
+
+.drinks_text_offline {
+    text-decoration: line-through;
+}
+
+.drink_item {
+    width: 200px;
+    height: 200px;
+    margin: 5px;
+    text-align: center;
+}
+
+.drink_price {
+    width: 100%;
+    color: red;
+    font-weight: bold;
+}
+
+    .drink_price::before {
+        content: '₽'
+    }
+
+.drink_name {
+    width: 100%;
+    color: black;
+}
+
